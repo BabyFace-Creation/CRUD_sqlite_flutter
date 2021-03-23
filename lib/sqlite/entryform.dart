@@ -22,6 +22,8 @@ class EntryFormState extends State<EntryForm> {
     if (item != null) {
       nameController.text = item.name;
       priceController.text = item.price.toString();
+      codeController.text = item.code.toString();
+      stockController.text = item.stock.toString();
     }
 //rubah
     return Scaffold(
@@ -120,13 +122,16 @@ class EntryFormState extends State<EntryForm> {
                           if (item == null) {
 // tambah data
                             item = Item(
-                              nameController.text,
-                              int.parse(priceController.text),
-                            );
+                                nameController.text,
+                                int.parse(priceController.text),
+                                int.parse(codeController.text),
+                                int.parse(stockController.text));
                           } else {
 // ubah data
                             item.name = nameController.text;
                             item.price = int.parse(priceController.text);
+                            item.code = int.parse(codeController.text);
+                            item.stock = int.parse(stockController.text);
                           }
 // kembali ke layar sebelumnya dengan membawa objek item
                           Navigator.pop(context, item);
