@@ -13,22 +13,31 @@ class DbHelper {
     Directory directory = await getApplicationDocumentsDirectory();
     String path = directory.path + 'item.db';
 //create, read databases
-    var itemDatabase = openDatabase(path, version: 6, onCreate: _createDb);
+    var itemDatabase = openDatabase(path,
+        version: 6, onCreate: _createDb, onUpgrade: _onUpgrade);
 //mengembalikan nilai object sebagai hasil dari fungsinya
     return itemDatabase;
   }
 
+  // update table baru
+  void _onUpgrade(Database db, int oldVersion, int newVersion) async {
+    _createDb(db, newVersion);
+  }
+
 //buat tabel baru dengan nama item
   void _createDb(Database db, int version) async {
-    await db.execute('''
-CREATE TABLE item (
-id INTEGER PRIMARY KEY AUTOINCREMENT,
-name TEXT,
-price INTEGER,
-code INTEGER,
-stock INTEGER
-)
-''');
+    var batch = db.batch();
+    await batch.execute('DROP TABLE IF EXISTS item');
+    await batch.execute('''
+    CREATE TABLE item (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    kodeBarang TEXT,
+    name TEXT,
+    price INTEGER,
+    stokBarang INTEGER
+    )
+    ''');
+    await batch.commit();
   }
 
 //select databases
