@@ -31,10 +31,9 @@ class DbHelper {
     await batch.execute('''
     CREATE TABLE item (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
-    kodeBarang TEXT,
     name TEXT,
-    price INTEGER,
-    stokBarang INTEGER
+    code INTEGER,
+    stock INTEGER
     )
     ''');
     await batch.commit();
